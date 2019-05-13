@@ -10,7 +10,6 @@ function createCar(plate:string,brand:string,color:string){
 */
 function createCar2(plate, color, brand) {
     var car = new Car(plate, color, brand);
-    $("#response").removeClass('d-none');
     var showPlate = document.querySelector('#showPlate');
     var showBrand = document.querySelector('#showBrand');
     var showColor = document.querySelector('#showColor');
@@ -25,21 +24,50 @@ function createCar2(plate, color, brand) {
         var _b = _a[_i], carFeature = _b[0], featureIntroduced = _b[1];
         carInfo.push(featureIntroduced.value);
     }
-    for (var i = 0; i < showCarFeatures.length; i++) {
-        showCarFeatures[i].textContent += carInfo[i + 1];
+    var regexTest = /\d\d\d\d[A-Za-z][A-Za-z][A-Za-z]/.test(plate.value);
+    if (regexTest == false) {
+        alert("la matrícula debe constar de 4 números y 3 letras");
+        return false;
+    }
+    else {
+        $("#response").removeClass('d-none');
+        for (var i = 0; i < showCarFeatures.length; i++) {
+            showCarFeatures[i].textContent += carInfo[i + 1];
+        }
     }
 }
-function addWheels() {
-    var wheelsBrand = [document.querySelector('#wheel1'), document.querySelector('#wheel2'), document.querySelector('#wheel3'), document.querySelector('#wheel4')];
-    var wheelsDiameter = [document.querySelector('#diameterWheel1'), document.querySelector('#diameterWheel2'), document.querySelector('#diameterWheel3'), document.querySelector('#diameterWheel4')];
-    showingWheels(wheelsBrand, wheelsDiameter);
-}
-function showingWheels(wheelsBrand, wheelsDiameter) {
+function addWheels(wheel1, wheel2, wheel3, wheel4, diameterWheel1, diameterWheel2, diameterWheel3, diameterWheel4) {
+    //Cada roda té un diàmetre >0.4 < 2. -- ver metdo every
+    var argumentsLength = arguments.length / 2;
+    var takeWheelsFromParams = Object.entries(arguments).slice(0, argumentsLength);
+    var takeDiameterFromParams = Object.entries(arguments).slice(argumentsLength);
+    console.log(takeDiameterFromParams);
     var wheelsResponse = document.querySelector('#responseWheelsContent');
-    wheelsResponse.innerHTML = '';
-    wheelsBrand.forEach(function (element, i) {
+    for (var i = 0; i < takeWheelsFromParams.length; i++) {
         var wheelFeature = document.createElement('p');
         wheelFeature.setAttribute("class", "wheelFeature" + i + ", col-3");
-        wheelsResponse.appendChild(wheelFeature).textContent = "Wheel " + (i + 1) + ": Brand " + element.value + ", Diameter: " + wheelsDiameter[i].value + " ";
-    });
+        wheelsResponse.appendChild(wheelFeature).textContent = "Wheel " + (i + 1) + ": Brand " + takeWheelsFromParams[i][1].value + ", Diameter: " + takeDiameterFromParams[i][1].value + " ";
+        console.log(takeDiameterFromParams[i + argumentsLength] + 'diametro');
+        console.log(takeWheelsFromParams[i] + 'brand');
+    }
+    /*
+let wheel:any = new Wheel(diameter,brand)
+
+let wheelsBrand:any=[document.querySelector('#wheel1'),document.querySelector('#wheel2'),document.querySelector('#wheel3'),document.querySelector('#wheel4')]
+let wheelsDiameter:any=[document.querySelector('#diameterWheel1'),document.querySelector('#diameterWheel2'),document.querySelector('#diameterWheel3'),document.querySelector('#diameterWheel4')]
+
+
+showingWheels(wheelsBrand,wheelsDiameter)
+
+}
+function showingWheels(wheelsBrand:any,wheelsDiameter:any){
+let wheelsResponse:any = document.querySelector('#responseWheelsContent')!
+wheelsResponse.innerHTML = ''
+
+wheelsBrand.forEach(function(element:any,i:any){
+    let wheelFeature = document.createElement('p');
+    wheelFeature.setAttribute("class", `wheelFeature${i}, col-3`);
+    wheelsResponse!.appendChild(wheelFeature).textContent = `Wheel ${i+1}: Brand ${element.value}, Diameter: ${wheelsDiameter[i].value} `
+})
+*/
 }
