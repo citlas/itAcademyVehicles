@@ -8,28 +8,25 @@ function createCar(plate:string,brand:string,color:string){
     + " WHEELS: " + JSON.stringify(car.wheels);
 }
 */
-function createCar2() {
-    document.querySelector('#responseContent').innerHTML = '';
+function createCar2(plate, color, brand) {
+    var car = new Car(plate, color, brand);
     $("#response").removeClass('d-none');
-    createContent('createPlate', 'Plate');
-    createContent('createBrand', 'Brand');
-    createContent('createColor', 'Color');
-}
-function createContent(carFeature, name) {
-    var plate = document.querySelector('#plate');
-    var brand = document.querySelector('#brand');
-    var color = document.querySelector('#color');
-    var carContent = document.querySelector('#responseContent');
-    carFeature = document.createElement('p');
-    carFeature.setAttribute("class", "col-3");
-    if (name == 'Plate') {
-        carContent.appendChild(carFeature).textContent = name + ": " + plate.value;
+    var showPlate = document.querySelector('#showPlate');
+    var showBrand = document.querySelector('#showBrand');
+    var showColor = document.querySelector('#showColor');
+    var showCarFeatures = [showPlate, showColor, showBrand];
+    if (((showPlate.textContent.length || showColor.textContent.length) || showBrand.textContent.length) > 7) {
+        showPlate.innerHTML = "Plate: ";
+        showColor.innerHTML = "Color: ";
+        showBrand.innerHTML = "Brand: ";
     }
-    else if (name == 'Brand') {
-        carContent.appendChild(carFeature).textContent = name + ": " + brand.value;
+    var carInfo = [];
+    for (var _i = 0, _a = Object.entries(car); _i < _a.length; _i++) {
+        var _b = _a[_i], carFeature = _b[0], featureIntroduced = _b[1];
+        carInfo.push(featureIntroduced.value);
     }
-    else if (name == 'Color') {
-        carContent.appendChild(carFeature).textContent = name + ": " + color.value;
+    for (var i = 0; i < showCarFeatures.length; i++) {
+        showCarFeatures[i].textContent += carInfo[i + 1];
     }
 }
 function addWheels() {

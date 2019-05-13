@@ -39,7 +39,7 @@
                         <input id="color" class="form-control" type="text" />
                     </div>
                 </div>
-                <button onclick="createCar2()" class="mt-3 btn btn-primary input-lg" type="button" >Create Car</button>
+                <button onclick="createCar2(plate,color,brand)" class="mt-3 btn btn-primary input-lg" type="button" >Create Car</button>
                 
             </div>
         </form>
@@ -87,7 +87,11 @@
                 </div>
             </form>
             <p>Car:</p>
-            <div id='responseContent' class="row"></div>
+            <div id='responseContent' class="row">
+                <p class="col-3" id="showPlate">Plate: </p>
+                <p class="col-3" id="showBrand">Brand: </p>
+                <p class="col-3" id="showColor">Color: </p>
+            </div>
             <div id='responseWheelsContent' class="row"></div>
          
         

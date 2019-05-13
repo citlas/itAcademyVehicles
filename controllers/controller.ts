@@ -8,33 +8,37 @@ function createCar(plate:string,brand:string,color:string){
 }
 */
 
-function createCar2(){
-    document.querySelector('#responseContent')!.innerHTML = ''
+
+function createCar2(plate:any,color:any,brand:any){
+    let car:any = new Car(plate,color,brand)
+        
     $("#response").removeClass('d-none');
-    createContent('createPlate','Plate');
-    createContent('createBrand','Brand');
-    createContent('createColor','Color');       
-}
-    
-function createContent(carFeature:any,name:string){
-    let plate:any = (<HTMLInputElement>document.querySelector('#plate'))
-    let brand:any = (<HTMLInputElement>document.querySelector('#brand'))
-    let color:any = (<HTMLInputElement>document.querySelector('#color'))
 
-    let carContent = document.querySelector('#responseContent');
+    let showPlate:any = (<HTMLInputElement>document.querySelector('#showPlate'))
+    let showBrand:any = (<HTMLInputElement>document.querySelector('#showBrand'))
+    let showColor:any = (<HTMLInputElement>document.querySelector('#showColor'))
+    let showCarFeatures=[showPlate,showColor,showBrand]
+  
 
-    carFeature = document.createElement('p'); 
-    carFeature.setAttribute("class", "col-3");
-
-    if(name=='Plate'){
-        carContent!.appendChild(carFeature).textContent = `${name}: ${plate!.value}`;
-    } else if (name=='Brand'){
-        carContent!.appendChild(carFeature).textContent = `${name}: ${brand!.value}`;
-    }  else if (name=='Color'){
-        carContent!.appendChild(carFeature).textContent = `${name}: ${color!.value}`;
+    if(((showPlate.textContent.length || showColor.textContent.length) || showBrand.textContent.length)>7){
+        showPlate.innerHTML = "Plate: "
+        showColor.innerHTML = "Color: "
+        showBrand.innerHTML = "Brand: "
     }
 
+    let carInfo = []
+    for (let [carFeature, featureIntroduced] of Object.entries(car)) {
+        carInfo.push(featureIntroduced.value);       
+    }
+
+    for(let i=0; i<showCarFeatures.length; i++ ){
+        showCarFeatures[i].textContent += carInfo[i+1];
+    }
+           
 }
+    
+
+
 
 function addWheels(){
     
