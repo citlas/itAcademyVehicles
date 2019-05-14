@@ -47,43 +47,29 @@ function createCar2(plate:any,color:any,brand:any){
 
 
 
-function addWheels(wheel1,wheel2,wheel3,wheel4,diameterWheel1,diameterWheel2,diameterWheel3,diameterWheel4){
-        //Cada roda té un diàmetre >0.4 < 2. -- ver metdo every
-        let argumentsLength =arguments.length/2;
-        let takeWheelsFromParams = Object.entries(arguments).slice(0,argumentsLength);
-        let takeDiameterFromParams = Object.entries(arguments).slice(argumentsLength);
-       console.log(takeDiameterFromParams);
-       
-       let wheelsResponse:any = document.querySelector('#responseWheelsContent')!
-        
-        for(let i=0;i<takeWheelsFromParams.length;i++){
-            let wheelFeature = document.createElement('p'); 
-            wheelFeature.setAttribute("class", `wheelFeature${i}, col-3`);
-            wheelsResponse!.appendChild(wheelFeature).textContent = `Wheel ${i+1}: Brand ${takeWheelsFromParams[i][1].value}, Diameter: ${takeDiameterFromParams[i][1].value} `
-         console.log(takeDiameterFromParams[i+argumentsLength] + 'diametro');
-         console.log(takeWheelsFromParams[i] + 'brand');
-         
+function addWheels(wheel1:any,wheel2:any,wheel3:any,wheel4:any,diameterWheel1:any,diameterWheel2:any,diameterWheel3:any,diameterWheel4:any){
+    let wheelBrands = [wheel1,wheel2,wheel3,wheel4]
+    let wheelDiameters = [diameterWheel1,diameterWheel2,diameterWheel3,diameterWheel4]  
+    let wheelsResponse:any = document.querySelector('#responseWheelsContent')!  
+    let mywheels:any = []
+
+    for (let i = 0; i < wheelBrands.length; ++i) {
+        mywheels[i] = new Wheel(wheelDiameters[i].value,wheelBrands[i].value)
+
+        if(isNaN(Number(mywheels[i].diameter))){
+            alert(`El diametro de la rueda ${i+1} no es correcto, debe ser un número entre 0.4 y 2, , no letra`)
+            return false
         }
-        
-        /*
-    let wheel:any = new Wheel(diameter,brand)
 
-    let wheelsBrand:any=[document.querySelector('#wheel1'),document.querySelector('#wheel2'),document.querySelector('#wheel3'),document.querySelector('#wheel4')]
-    let wheelsDiameter:any=[document.querySelector('#diameterWheel1'),document.querySelector('#diameterWheel2'),document.querySelector('#diameterWheel3'),document.querySelector('#diameterWheel4')]
-   
-  
-    showingWheels(wheelsBrand,wheelsDiameter)
-
-}
-function showingWheels(wheelsBrand:any,wheelsDiameter:any){
-    let wheelsResponse:any = document.querySelector('#responseWheelsContent')!
-    wheelsResponse.innerHTML = ''
-
-    wheelsBrand.forEach(function(element:any,i:any){
+        if((Number(wheelDiameters[i].value)<0.4)||(Number(wheelDiameters[i].value)>2)){
+            alert(`El diametro de la rueda ${i+1} no es correcto, debe ser entre 0.4 y 2`)            
+            return false
+        } 
+    }     
+             
+        mywheels.forEach(function(element:any,i:any){
         let wheelFeature = document.createElement('p'); 
         wheelFeature.setAttribute("class", `wheelFeature${i}, col-3`);
-        wheelsResponse!.appendChild(wheelFeature).textContent = `Wheel ${i+1}: Brand ${element.value}, Diameter: ${wheelsDiameter[i].value} `
+        wheelsResponse!.appendChild(wheelFeature).textContent = `Wheel ${i+1}: Brand ${element.brand}, Diameter: ${mywheels[i].diameter} `
     })
-   */
-   
 }
