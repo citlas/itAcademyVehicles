@@ -27,7 +27,7 @@ function showCar(car) {
     var showBrand = document.querySelector('#showBrand');
     var showColor = document.querySelector('#showColor');
     //borrar contenido anterior y ocultar, mostrar forms
-    $("#response").removeClass('d-none');
+    $("#wheelsForm").removeClass('d-none');
     $(".carForm").addClass('d-none');
     if (((showPlate.textContent.length || showColor.textContent.length) || showBrand.textContent.length) > 7) {
         showPlate.innerHTML = "Plate: ";
@@ -39,44 +39,47 @@ function showCar(car) {
     showBrand.textContent += car.brand;
 }
 function createWheels() {
-    var wheel1, wheel2, wheel3, wheel4, diameterWheel1, diameterWheel2, diameterWheel3, diameterWheel4;
-    wheel1 = document.querySelector('#wheel1');
-    wheel2 = document.querySelector('#wheel2');
-    wheel3 = document.querySelector('#wheel3');
-    wheel4 = document.querySelector('#wheel4');
-    diameterWheel1 = document.querySelector('#diameterWheel1');
-    diameterWheel2 = document.querySelector('#diameterWheel2');
-    diameterWheel3 = document.querySelector('#diameterWheel3');
-    diameterWheel4 = document.querySelector('#diameterWheel4');
-    var wheelBrands = [wheel1.value, wheel2.value, wheel3.value, wheel4.value];
-    var wheelDiameters = [Number(diameterWheel1.value), Number(diameterWheel2.value), Number(diameterWheel3.value), Number(diameterWheel4.value)];
+    var wheelsArray = [];
+    var diameterArray = [];
     var checkOkDiameters = true;
-    var mywheels = [];
-    for (var i = 0; i < wheelBrands.length; ++i) {
-        if (isNaN(wheelDiameters[i])) {
-            alert("El diametro de la rueda " + (i + 1) + " no es correcto, debe ser un n\u00FAmero entre 0.4 y 2, , no letra");
-            checkOkDiameters = false;
-            return false;
-        }
-        else if (wheelDiameters[i] < 0.4 || wheelDiameters[i] > 2) {
-            alert("El diametro de la rueda " + (i + 1) + " no es correcto, debe ser entre 0.4 y 2");
-            checkOkDiameters = false;
+    var wheelsQuantity = 4;
+    for (var i = 1; i <= wheelsQuantity; i++) {
+        wheelsArray[i] = document.getElementById('wheel' + i);
+        wheelsArray[i] = wheelsArray[i].value;
+        diameterArray[i] = document.getElementById("diameterWheel" + i);
+        diameterArray[i] = Number(diameterArray[i].value);
+        checkOkDiameters = validate(diameterArray, i);
+        if (!checkOkDiameters) {
             return false;
         }
     }
+    var mywheels = [];
     if (checkOkDiameters) {
-        for (var i = 0; i < wheelBrands.length; ++i) {
-            mywheels[i] = new Wheel(wheelDiameters[i], wheelBrands[i]);
+        for (var i = 0; i < wheelsArray.length; ++i) {
+            mywheels[i] = new Wheel(diameterArray[i], wheelsArray[i]);
         }
         showWheels(mywheels);
     }
 }
+function validate(diameterArray, i) {
+    if (isNaN(diameterArray[i])) {
+        alert("El diametro de la rueda " + i + " no es correcto, debe ser un n\u00FAmero entre 0.4 y 2, , no letra");
+        //checkOkDiameters= false
+        return false;
+    }
+    else if (diameterArray[i] < 0.4 || diameterArray[i] > 2) {
+        alert("El diametro de la rueda " + i + " no es correcto, debe ser entre 0.4 y 2");
+        //checkOkDiameters= false
+        return false;
+    }
+    return true;
+}
 function showWheels(mywheels) {
     var wheelsResponse = document.querySelector('#responseWheelsContent');
     wheelsResponse.textContent = '';
-    for (var i = 0; i < mywheels.length; ++i) {
+    for (var i = 1; i < mywheels.length; ++i) {
         var wheelFeature = document.createElement('p');
-        wheelFeature.setAttribute("class", "wheelFeature" + (i + 1) + ", col-3");
-        wheelsResponse.appendChild(wheelFeature).textContent = "Wheel " + (i + 1) + ": Brand " + mywheels[i].brand + ", Diameter: " + mywheels[i].diameter + " ";
+        wheelFeature.setAttribute("class", "wheelFeature" + i + ", col-3");
+        wheelsResponse.appendChild(wheelFeature).textContent = "Wheel " + i + ": Brand " + mywheels[i].brand + ", Diameter: " + mywheels[i].diameter + " ";
     }
 }

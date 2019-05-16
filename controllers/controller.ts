@@ -25,6 +25,7 @@ function createCar2(){
     }         
 }
     
+
 function showCar(car:any) {
     
     let showPlate:any = (<HTMLInputElement>document.querySelector('#showPlate'))
@@ -32,7 +33,7 @@ function showCar(car:any) {
     let showColor:any = (<HTMLInputElement>document.querySelector('#showColor'))
     
     //borrar contenido anterior y ocultar, mostrar forms
-    $("#response").removeClass('d-none');
+    $("#wheelsForm").removeClass('d-none');
     $(".carForm").addClass('d-none'); 
       if(((showPlate.textContent.length || showColor.textContent.length) || showBrand.textContent.length)>7){
         showPlate.innerHTML = "Plate: "
@@ -49,54 +50,51 @@ function showCar(car:any) {
 
 function createWheels(){
 
-    let wheel1:any,wheel2:any,wheel3:any,wheel4:any,diameterWheel1:any,diameterWheel2:any,diameterWheel3:any,diameterWheel4:any
-    wheel1 = document.querySelector('#wheel1')
-    wheel2 = document.querySelector('#wheel2')
-    wheel3 = document.querySelector('#wheel3')
-    wheel4 = document.querySelector('#wheel4')
-    diameterWheel1 = document.querySelector('#diameterWheel1')
-    diameterWheel2 = document.querySelector('#diameterWheel2')
-    diameterWheel3 = document.querySelector('#diameterWheel3')
-    diameterWheel4 = document.querySelector('#diameterWheel4')
+    let wheelsArray:any = []
+    let diameterArray:any = []
+    let checkOkDiameters:boolean = true
+    let wheelsQuantity:number = 4
 
-    let wheelBrands = [wheel1.value,wheel2.value,wheel3.value,wheel4.value]
-    let wheelDiameters = [Number(diameterWheel1.value),Number(diameterWheel2.value),Number(diameterWheel3.value),Number(diameterWheel4.value)]  
-    
-    let checkOkDiameters = true
-    let mywheels:any = []
-    
-
-   for (let i = 0; i < wheelBrands.length; ++i) {
-        if(isNaN(wheelDiameters[i])){
-            alert(`El diametro de la rueda ${i+1} no es correcto, debe ser un número entre 0.4 y 2, , no letra`)
-            checkOkDiameters= false
-            return false
-        } else if(wheelDiameters[i]<0.4||wheelDiameters[i]>2){
-            alert(`El diametro de la rueda ${i+1} no es correcto, debe ser entre 0.4 y 2`)
-            checkOkDiameters= false
-            return false
-        } 
-    }   
-    
-    if(checkOkDiameters){
+    for (let i = 1; i <= wheelsQuantity; i++) {
+       wheelsArray[i] = document.getElementById('wheel'+i)
+       wheelsArray[i] = wheelsArray[i].value
+       diameterArray[i] = document.getElementById(`diameterWheel`+i)
+       diameterArray[i] = Number(diameterArray[i].value)
+       checkOkDiameters = validate(diameterArray,i)
+       if(!checkOkDiameters){
+           return false
+       }
        
-        for (let i = 0; i < wheelBrands.length; ++i) {
-            mywheels[i] = new Wheel(wheelDiameters[i],wheelBrands[i]);
+    }
+    
+    let mywheels:any = []  
+    if(checkOkDiameters){
+        for (let i = 0; i < wheelsArray.length; ++i) {
+            mywheels[i] = new Wheel(diameterArray[i],wheelsArray[i]);
         }
         showWheels(mywheels)
-      
     }
-     
+}
+
+function validate(diameterArray:any,i:number){
+    if(isNaN(diameterArray[i])){
+        alert(`El diametro de la rueda ${i} no es correcto, debe ser un número entre 0.4 y 2, , no letra`)
+        //checkOkDiameters= false
+        return false
+    } else if(diameterArray[i]<0.4||diameterArray[i]>2){
+        alert(`El diametro de la rueda ${i} no es correcto, debe ser entre 0.4 y 2`)
+        //checkOkDiameters= false
+        return false
+    } 
+    return true
 }
 
 function showWheels(mywheels:any){
     let wheelsResponse:any = document.querySelector('#responseWheelsContent')!  
     wheelsResponse.textContent = ''
-   
-    for (let i = 0; i < mywheels.length; ++i) {
-        
+    for (let i = 1; i < mywheels.length; ++i) {
         let wheelFeature = document.createElement('p'); 
-        wheelFeature.setAttribute("class", `wheelFeature${i+1}, col-3`);
-        wheelsResponse!.appendChild(wheelFeature).textContent = `Wheel ${i+1}: Brand ${mywheels[i].brand}, Diameter: ${mywheels[i].diameter} `
+        wheelFeature.setAttribute("class", `wheelFeature${i}, col-3`);
+        wheelsResponse!.appendChild(wheelFeature).textContent = `Wheel ${i}: Brand ${mywheels[i].brand}, Diameter: ${mywheels[i].diameter} `
     }
 }
